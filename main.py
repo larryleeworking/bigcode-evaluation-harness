@@ -89,7 +89,13 @@ def parse_args():
     parser.add_argument(
         "--max_length_generation",
         type=int,
-        default=512,
+        default=None,
+        help="Maximum length of generated sequence (prompt+generation)",
+    )
+    parser.add_argument(
+        "--max_new_tokens",
+        type=int,
+        default=None,
         help="Maximum length of generated sequence (prompt+generation)",
     )
     parser.add_argument(
@@ -300,6 +306,15 @@ def main():
             truncation_side="left",
             padding_side="right",  # padding on the right is needed to cut off padding in `complete_code`
         )
+        QWEN_MODELS = [
+            "Qwen/Qwen-14B-Chat",
+            "Qwen/Qwen-7B-Chat",
+            "Qwen/Qwen-14B",
+            "Qwen/Qwen-7B",
+        ]
+        if args.model in QWEN_MODELS:
+            tokenizer.eos_token = tokenizer.bos_token = '<|endoftext|>'
+            tokenizer.eos_token_id = tokenizer.bos_token_id = 151643
         if not tokenizer.eos_token:
             if tokenizer.bos_token:
                 tokenizer.eos_token = tokenizer.bos_token

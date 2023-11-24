@@ -258,6 +258,7 @@ def complete_code(
                 gen_kwargs["stopping_criteria"][idx].input_length = batch["input_len"].max().item()                
             
             inputs = batch["ids"][:, : batch["input_len"]]
+            gen_kwargs['use_cache'] = True
             if "ids_encoder" in batch:
                 if is_wrapped:
                     generated_tokens = accelerator.unwrap_model(model).generate(
@@ -283,12 +284,14 @@ def complete_code(
                     generated_tokens = accelerator.unwrap_model(model).generate(
                         input_ids=inputs,
                         num_return_sequences=batch_size,
+                        eos_token_id=tokenizer.eos_token_id,
                         **gen_kwargs,
                     )
                 else:
                     generated_tokens = model.generate(
                         input_ids=inputs,
                         num_return_sequences=batch_size,
+                        eos_token_id=tokenizer.eos_token_id,
                         **gen_kwargs,
                     )
             # each task is generated batch_size times
@@ -302,6 +305,10 @@ def complete_code(
             )
             generated_tokens = generated_tokens.cpu().numpy()
             generated_tasks = generated_tasks.cpu().numpy()
+
+            print(tokenizer.decode(
+                generated_tokens[0], skip_special_tokens=False, clean_up_tokenization_spaces=False
+            ))
 
             for sample, generated_tokens in zip(generated_tasks, generated_tokens):
                 gen_token_dict[sample].append(generated_tokens)

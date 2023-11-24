@@ -6,7 +6,7 @@
 <h4 align="center">
     <p>
         <a href="#features">Features</a> |
-        <a href="#setup">Usage</a> |
+        <a href="#usage">Usage</a> |
         <a href="#implementing-new-tasks">Contribution</a>
     <p>
 </h4>
@@ -24,7 +24,7 @@ New tasks for InfiCoder-Eval:
     
 - code-ffqa-v2-endn
 
-    Prompt with `system_prompt + '\n' + content_prompt`.
+    Prompt with `system_prompt + '\n' + content_prompt + '\n'`.
 
 - code-ffqa-v2-deepseek-chat 
 
@@ -58,7 +58,7 @@ For detail information, please visit [InfiCoder-Eval](https://infi-coder.github.
 
 ## Usage
 
-For InfiCoder-Eval, **we only use this framework for response generation**. The actual evaluation is delegated by our [Evaluation Repo](https://github.com/infi-coder/inficoder-eval-framework), which can be deployed in the same instance or another one.
+For InfiCoder-Eval, **we only use this framework for response generation**. The actual evaluation is delegated to our [Evaluation Repo](https://github.com/infi-coder/inficoder-eval-framework), which can be deployed in the same instance or another one.
 
 An example usage can be found in `run.sh`:
 
